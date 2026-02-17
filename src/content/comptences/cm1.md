@@ -7,5 +7,5 @@ description: |
   Partir des exigences et aller jusqu'à une application complète.
 UEs: ["UE1.1", "UE2.1", "UE3.1", "UE4.1"]
 img_alt: "Développement d'applications"
-tags: ["Site e-commerce BuildMyPC", "Bomberman", "Application de gestion d’audits"]
+tags: ["Site de e-commerce", "Bomberman", "Application de gestion d'audit"]
 ---

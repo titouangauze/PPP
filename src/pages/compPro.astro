@@ -1,0 +1,217 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+
+// Récupération des compétences et projets
+const allComptences = await getCollection('comptences');
+const comptences = allComptences.filter((comp) => !comp.data.inProgress);
+const allProjects = await getCollection('projects');
+
+// Import des images
+import gestProd from '@assets/images/gestion_prod2.png';
+import fondAccueil from '@assets/images/fond-accueil2.jpg';
+import bomberman from '@assets/images/bomberman.jpeg';
+
+// Mappage des images
+const imageMap: { [key: string]: any } = {
+	'src/assets/images/gestion_prod2.png': gestProd,
+	'src/assets/images/fond-accueil2.jpg': fondAccueil,
+	'src/assets/images/bomberman.jpeg': bomberman,
+};
+
+// Préparer les données des projets liés à chaque compétence
+const comptencesWithProjects = comptences.map(comp => ({
+	...comp,
+	linkedProjects: allProjects.filter(project => 
+		comp.data.tags.some(tag => 
+			project.data.title.toLowerCase().includes(tag.toLowerCase()) ||
+			tag.toLowerCase().includes(project.data.title.toLowerCase())
+		)
+	)
+}));
+---
+
+<Layout title="Projets par compétences">
+	<section class="mx-auto max-w-6xl px-6 py-16">
+		<!-- Titre principal -->
+		<h1 class="mb-12 text-4xl font-bold" style="color: #E06330;">Projets par compétences</h1>
+
+		<!-- Grille des compétences -->
+		<div id="competences-grid" class="mb-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3" style="color: #E06330;">
+			{
+				comptencesWithProjects.map((comp) => (
+					<button
+						class="group rounded-xl bg-white p-6 shadow transition hover:shadow-xl dark:bg-zinc-900"
+						onclick={`toggleCompetence('comp-${comp.slug}')`}
+						aria-label={`Afficher les projets pour ${comp.data.title}`}
+					>
+						<h3 class="text-left text-lg font-semibold text-gray-800 transition group-hover:text-orange dark:text-gray-100">
+							{comp.data.title}
+						</h3>
+						<p class="mt-2 text-left text-sm text-gray-600 line-clamp-2 dark:text-gray-400" style="color: black;">
+							{comp.data.description}
+						</p>
+						<div class="mt-4 flex items-center justify-between" >
+							<span class="inline-block rounded-full bg-orange/10 px-3 py-1 text-xs font-medium text-orange">
+								{comp.linkedProjects.length} projet{comp.linkedProjects.length !== 1 ? 's' : ''}
+							</span>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="2"
+								stroke="currentColor"
+								class="h-5 w-5 text-orange transition group-hover:translate-y-1"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"></path>
+							</svg>
+						</div>
+					</button>
+				))
+			}
+		</div>
+
+		<!-- Sections des projets pour chaque compétence -->
+		{
+			comptencesWithProjects.map((comp) => (
+				<div id={`comp-${comp.slug}`} class="mb-16 hidden">
+					<div class="mb-8 rounded-lg bg-orange p-8 dark:bg-orange">
+						<h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">{comp.data.title}</h2>
+						<p class="mt-3 text-gray-700 dark:text-gray-300">{comp.data.description}</p>
+					</div>
+
+					{comp.linkedProjects.length > 0 ? (
+						<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+							{comp.linkedProjects.map((project) => (
+								<article
+									class="dark:bg-zinc-900 group rounded-xl bg-white p-6 shadow transition hover:shadow-2xl"
+									style="color: black;"
+								>
+									{/* Image */}
+									{project.data.image && imageMap[project.data.image] && (
+										<Image
+											src={imageMap[project.data.image]}
+											alt={project.data.img_alt || project.data.title}
+											class="mb-4 h-48 w-full rounded-lg object-cover"
+										/>
+									)}
+
+									{/* Titre */}
+									<h3 class="text-xl font-semibold transition group-hover:text-orange">
+										{project.data.title}
+									</h3>
+
+									{/* Description */}
+									<p class="mt-2 text-sm text-black opacity-80">{project.data.description}</p>
+
+									{/* Tags */}
+									<div class="mt-3 flex flex-wrap gap-2">
+										{project.data.tags.map((tag) => (
+											<span class="bg-gray-200 dark:bg-zinc-700 rounded px-2 py-1 text-xs">{tag}</span>
+										))}
+									</div>
+
+									{/* Bouton Lien */}
+									<div class="mt-4 flex gap-4">
+										<a
+											href={project.data.link}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="pointer-events-auto relative z-20 text-sm font-medium text-orange hover:underline"
+										>
+											Voir le projet →
+										</a>
+									</div>
+
+									{/* Badge En cours */}
+									{project.data.inProgress && (
+										<div class="mt-4">
+											<span class="rounded bg-orange px-2 py-1 text-xs text-white">En cours</span>
+										</div>
+									)}
+								</article>
+							))}
+						</div>
+					) : (
+						<div class="rounded-lg bg-gray-100 p-8 text-center dark:bg-zinc-800">
+							<p class="text-gray-600 dark:text-gray-400" style="color: black;">
+								Aucun projet n'est lié à cette compétence pour le moment.
+							</p>
+						</div>
+					)}
+
+					<div class="mt-8">
+						<button
+							onclick="goBackToCompetences()"
+							class="group inline-flex items-center gap-2 text-sm font-medium transition hover:text-orange"
+							style="color: #E06330;"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								class="h-4 w-4 transition group-hover:-translate-y-1"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path>
+							</svg>
+							Retour aux compétences
+						</button>
+					</div>
+				</div>
+			))
+		}
+
+		<br/>
+		<div>
+			<!-- Bouton retour à l'accueil -->
+			<a
+				href={`${import.meta.env.BASE_URL}/`}
+				class="group mb-10 inline-flex items-center gap-2 text-sm font-medium transition hover:text-orange"
+                style="color: #E06330;"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="h-4 w-4 transition group-hover:-translate-x-1"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"></path>
+				</svg>
+				Retour à l'accueil
+			</a>
+		</div>
+	</section>
+
+	<script is:inline>
+		function toggleCompetence(id) {
+			// Masquer tous les autres éléments
+			document.querySelectorAll('[id^="comp-"]').forEach((el) => {
+				el.classList.add('hidden');
+			});
+			// Afficher l'élément sélectionné
+			const element = document.getElementById(id);
+			if (element) {
+				element.classList.remove('hidden');
+				// Scroller vers le haut de la section
+				element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}
+		}
+
+		function goBackToCompetences() {
+			// Masquer tous les éléments de projets
+			document.querySelectorAll('[id^="comp-"]').forEach((el) => {
+				el.classList.add('hidden');
+			});
+			// Scroller vers la grille des compétences
+			const competencesGrid = document.getElementById('competences-grid');
+			if (competencesGrid) {
+				competencesGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}
+		}
+	</script>
+</Layout>

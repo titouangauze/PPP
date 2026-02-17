@@ -7,5 +7,5 @@ description: |
   Administrer une base de données, concevoir et réaliser des systèmes d'information décisionnels.
 UEs: ["UE1.4", "UE2.4", "UE3.4", "UE4.4", "UE5.4", "UE6.4"]
 img_alt: "Gestion des données"
-tags: ["Site e-commerce BuildMyPC", "Application de gestion d’audits"]
+tags: ["Site de e-commerce", "Application de gestion d'audit"]
 ---

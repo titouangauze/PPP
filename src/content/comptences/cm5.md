@@ -7,5 +7,5 @@ description: |
   Participer à la conception et à la mise en œuvre d'un projet système d'information.
 UEs: ["UE1.5", "UE2.5", "UE3.5", "UE4.5", "UE5.5", "UE6.5"]
 img_alt: "Gestion de projet"
-tags: ["Site e-commerce BuildMyPC", "Application de gestion d’audits"]
+tags: ["Site de e-commerce", "Application de gestion d'audit"]
 ---

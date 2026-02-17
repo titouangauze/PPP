@@ -60,6 +60,8 @@ const imageMap: { [key: string]: any } = {
 						<div class="mt-4 flex gap-4">
 							<a
 								href={project.data.link}
+								target="_blank"
+								rel="noopener noreferrer"
 								class="pointer-events-auto relative z-20 text-sm font-medium text-orange hover:underline"
 							>
 								Voir le projet →
@@ -80,7 +82,7 @@ const imageMap: { [key: string]: any } = {
 		<div>
 			<!-- Bouton retour -->
 			<a
-				href="/"
+				href={`${import.meta.env.BASE_URL}/`}
 				class="text-gray-600 dark:text-gray-300 group mb-10 inline-flex items-center gap-2 text-sm font-medium transition hover:text-orange"
                 style="color: #E06330;"
 			>
