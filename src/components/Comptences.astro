@@ -1,0 +1,40 @@
+---
+import Card from '@components/ui/Card.astro';
+import Modal from '@components/ui/Modal.astro';
+import { getCollection } from 'astro:content';
+
+const allComptences = await getCollection('comptences');
+const comptences = allComptences.filter((comp) => !comp.data.inProgress);
+---
+
+<section
+    data-testid="comptences"
+    id="comptences"
+    class="mb-10 flex flex-col items-center justify-center md:mb-0 md:h-screen"
+>
+    <h2 class="font-monospace text-2xl text-orange lg:text-4xl">Compétences</h2>
+    <span class="mb-10 h-1 w-10 bg-orange"></span>
+
+    <div class="mb-10 flex w-full flex-col flex-wrap items-center md:flex-row">
+        {
+            comptences.map((comp, index) => (
+                <>
+                    <Card
+                        url={comp.data.link}
+                        title={comp.data.title}
+                        description={comp.data.description}
+                        alt={comp.data.img_alt}
+                        tags={comp.data.tags}
+                        image={comp.data.image}
+                        modalId={`modal-${index}`}
+                    />
+                    <Modal
+                        id={`modal-${index}`}
+                        title={comp.data.title}
+                        description={comp.data.description}
+                    />
+                </>
+            ))
+        }
+    </div>
+</section>
