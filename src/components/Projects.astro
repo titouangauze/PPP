@@ -41,7 +41,7 @@ const projects = await getCollection('projects', ({ data }) => {
         }
     </div>
     <a
-    href="/projets"
+    href={`${import.meta.env.BASE_URL}projets`}
     class="flex flex-row text-black hover:text-orange dark:text-white dark:hover:text-orange"
     aria-label="Voir tous les projets"
     >
