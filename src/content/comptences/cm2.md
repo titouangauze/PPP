@@ -6,5 +6,5 @@ description: |
   Sélectionner les algorithmes adéquats pour répondre à un problème donné.
 UEs: ["UE1.2", "UE2.2", "UE3.2", "UE4.2"]
 img_alt: "Optimisation d'applications"
-tags: ["Bomberman"]
+tags: ["Site de e-commerce", "Bomberman", "Application de gestion d'audit"]
 ---

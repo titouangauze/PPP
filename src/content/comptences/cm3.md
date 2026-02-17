@@ -6,5 +6,5 @@ description: |
   Déployer des services dans une architecture réseau.
 UEs: ["UE1.3", "UE2.3", "UE3.3", "UE4.3"]
 img_alt: "Administration systèmes"
-tags: []
+tags: ["Site de e-commerce", "Application de gestion d'audit"]
 ---
