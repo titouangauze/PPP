@@ -2,6 +2,18 @@
 import Card from '@components/ui/Card.astro';
 import { getCollection } from 'astro:content';
 
+// Imports des images
+import gestProd from '@assets/images/gestion_prod2.png';
+import fondAccueil from '@assets/images/fond-accueil2.jpg';
+import bomberman from '@assets/images/bomberman.jpeg';
+
+// Mappage des images
+const imageMap: { [key: string]: any } = {
+	'src/assets/images/gestion_prod2.png': gestProd,
+	'src/assets/images/fond-accueil2.jpg': fondAccueil,
+	'src/assets/images/bomberman.jpeg': bomberman,
+};
+
 const projects = await getCollection('projects', ({ data }) => {
     return !data.inProgress;
 });
@@ -23,7 +35,7 @@ const projects = await getCollection('projects', ({ data }) => {
                     description={project.data.description}
                     alt={project.data.img_alt}
                     tags={project.data.tags}
-                    image={project.data.image}
+                    image={imageMap[project.data.image]}
                 />
             ))
         }

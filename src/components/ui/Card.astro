@@ -11,7 +11,7 @@ interface Props {
     children?: HTMLElement | HTMLElement[];
     color?: string;
     modalId?: string;
-    image?: string;
+    image?: any;
 }
 
 const {
@@ -33,7 +33,7 @@ const {
         <div class="mt-1 p-2" onclick={`event.preventDefault(); document.getElementById('${modalId}')?.classList.add('active')`}>
             <h3 class="text-xl text-orange lg:text-2xl">{title}</h3>
             {image && (
-                <img
+                <Image
                     src={image}
                     alt={alt}
                     class="mb-4 h-48 w-full rounded-lg object-cover"
