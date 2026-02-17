@@ -4,7 +4,7 @@ import icon from "astro-icon";
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://titouZXC.github.io/PPP',
+  site: 'https://titouangauze.github.io/PPP',
   base: '/PPP',
   outDir: './docs',
   integrations: [tailwind(), mdx(), icon({
